@@ -1,4 +1,4 @@
-# Tenis Clean Control
+# DIXORT PWA
 
 MVP de PWA para registrar, seguir y entregar tenis en un negocio de limpieza y restauración.
 
