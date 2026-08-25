@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#126b57" />
+    <meta name="description" content="Control operativo para limpieza de tenis" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Dixort Cleaning</title>
+  </head>
+  <body>
+    <section id="loginView" class="login-view" aria-labelledby="loginTitle">
+      <form id="loginForm" class="login-card">
+        <img class="login-avatar" src="brand-avatar.jpeg" alt="Dixort Cleaning" />
+        <p class="eyebrow">ACCESO SEGURO</p>
+        <h1 id="loginTitle">Dixort Cleaning</h1>
+        <label>Usuario<input id="loginUsername" required autocomplete="username" /></label>
+        <label>Contraseña<input id="loginPassword" type="password" required autocomplete="current-password" /></label>
+        <p id="loginError" class="login-error" hidden>Usuario o contraseña incorrectos.</p>
+        <button class="primary-button" type="submit">Iniciar sesión</button>
+      </form>
+    </section>
+    <main class="app-shell">
+      <header class="topbar">
+        <img class="brand-avatar" src="brand-avatar.jpeg" alt="Dixort Cleaning" />
+        <div>
+          <p class="eyebrow">OPERACIÓN DIARIA</p>
+          <h1 id="companyName">Dixort Cleaning</h1>
+        </div>
+        <button class="icon-button" id="installButton" hidden aria-label="Instalar aplicación">↓</button>
+      </header>
+
+      <section class="worker-bar" aria-label="Perfil de acceso">
+        <label for="roleSelect">Perfil de acceso</label>
+        <select id="roleSelect">
+          <option value="admin">Administrador</option>
+          <option value="worker">Trabajador</option>
+        </select>
+      </section>
+
+      <section id="dashboardView" class="view active">
+        <div class="welcome-row">
+          <div>
+            <p class="eyebrow">HOY</p>
+            <h2 id="greeting">Todo bajo control.</h2>
+          </div>
+          <button class="primary-button compact admin-only" data-view="registerView">+ Registrar</button>
+        </div>
+
+        <div class="quick-grid">
+          <button class="quick-action admin-only" data-view="registerView"><span>＋</span>Registrar tenis</button>
+          <button class="quick-action" data-view="searchView"><span>⌕</span>Buscar código</button>
+          <button class="quick-action" id="myProcessButton"><span>◌</span>Mi proceso</button>
+          <button class="quick-action" id="readyButton"><span>✓</span>Listos para entrega</button>
+        </div>
+
+        <div class="section-heading">
+          <div><p class="eyebrow">COLA DE TRABAJO</p><h2 id="queueTitle">Tenis en proceso</h2></div>
+          <button class="text-button" id="showAllButton">Ver todos</button>
+        </div>
+        <div id="orderList" class="order-list" aria-live="polite"></div>
+      </section>
+
+      <section id="registerView" class="view">
+        <div class="section-heading"><div><p class="eyebrow">NUEVO INGRESO</p><h2>Registrar tenis</h2></div></div>
+        <form id="registerForm" class="form-card">
+          <fieldset>
+            <legend>Cliente</legend>
+            <label>Nombre<input name="customerName" required placeholder="Nombre del cliente" autocomplete="name" /></label>
+            <label>WhatsApp<input name="customerPhone" required inputmode="tel" placeholder="Ej. 573001234567" /></label>
+            <label>Dirección del cliente<input name="customerAddress" placeholder="Ej. Calle 45 # 20-18, Barrio Centro" autocomplete="street-address" /></label>
+          </fieldset>
+          <fieldset>
+            <legend>Artículo principal</legend>
+            <label>Tipo de artículo<select name="itemType" required><option value="Tenis">Tenis</option><option value="Gorra">Gorra</option><option value="Accesorio">Accesorio</option><option value="Camisa">Camisa</option><option value="Pantalón">Pantalón</option></select></label>
+            <div class="two-columns">
+              <label>Marca<input name="brand" required placeholder="Nike" /></label>
+              <label>Modelo<input name="model" required placeholder="Air Force 1" /></label>
+            </div>
+            <div class="two-columns">
+              <label>Color<input name="color" required placeholder="Blanco" /></label>
+              <label>Talla<input name="size" placeholder="40" /></label>
+            </div>
+            <div id="extraItems" class="extra-items"></div>
+            <button id="addItemButton" class="secondary-button add-item-button" type="button">Agregar otro artículo</button>
+          </fieldset>
+          <fieldset>
+            <legend>Servicios solicitados</legend>
+            <label class="service-article-selector">Aplicar servicios a<select id="serviceArticleSelect" aria-label="Artículo al que se aplican los servicios"><option value="0">Artículo principal</option></select></label>
+            <div class="service-list">
+              <label><span><input type="checkbox" name="services" value="Horma" /> Horma</span><input class="service-price" name="price-Horma" type="number" min="0" step="1000" inputmode="decimal" /></label>
+              <label><span><input type="checkbox" name="services" value="Desmanchado" checked /> Desmanchado</span><input class="service-price" name="price-Desmanchado" type="number" min="0" step="1000" inputmode="decimal" /></label>
+              <label><span><input type="checkbox" name="services" value="Limpieza" checked /> Limpieza</span><input class="service-price" name="price-Limpieza" type="number" min="0" step="1000" inputmode="decimal" /></label>
+              <label><span><input type="checkbox" name="services" value="Secado" checked /> Secado</span><input class="service-price" name="price-Secado" type="number" min="0" step="1000" inputmode="decimal" /></label>
+              <label><span><input type="checkbox" name="services" value="Restauración de color" /> Restauración de color</span><input class="service-price" name="price-Restauración de color" type="number" min="0" step="1000" inputmode="decimal" /></label>
+            </div>
+            <p id="pricePreview" class="price-preview">Total del servicio: $0</p>
+            <label>Valor de domicilio<input name="deliveryFee" type="number" min="0" step="1000" inputmode="decimal" value="0" /></label>
+            <label>Fotos de recepción (JPG, opcionales)<input id="orderPhotos" name="photos" type="file" accept="image/jpeg,.jpg,.jpeg" multiple /></label>
+            <div id="photoAssignments" class="photo-assignments" hidden></div>
+            <p class="field-hint">Puedes continuar sin fotos. El conjunto de imágenes no puede superar 100 MB.</p>
+            <label>Observaciones<textarea name="notes" rows="3" placeholder="Manchas, daños previos o indicaciones del cliente"></textarea></label>
+            <label>Fecha estimada de entrega<input name="estimatedDate" type="date" required /></label>
+          </fieldset>
+          <button class="primary-button" type="submit">Crear orden y guía</button>
+        </form>
+      </section>
+
+      <section id="searchView" class="view">
+        <div class="section-heading"><div><p class="eyebrow">CONSULTA</p><h2>Buscar por código</h2></div></div>
+        <form id="searchForm" class="search-box"><input id="searchInput" aria-label="Código de orden" placeholder="#237659" autocomplete="off" /><button class="primary-button" type="submit">Buscar</button></form>
+        <div class="search-filters">
+          <label>Desde<input id="filterDateFrom" type="date" /></label>
+          <label>Hasta<input id="filterDateTo" type="date" /></label>
+          <label>Tipo de artículo<select id="filterItemType"><option value="">Todos</option><option>Tenis</option><option>Gorra</option><option>Accesorio</option><option>Camisa</option><option>Pantalón</option></select></label>
+        </div>
+        <div id="searchResult" aria-live="polite"></div>
+      </section>
+
+      <section id="settingsView" class="view">
+        <div class="section-heading"><div><p class="eyebrow">AJUSTES</p><h2>Empresa</h2></div></div>
+        <form id="settingsForm" class="form-card">
+          <label>Nombre de la empresa<input id="companyInput" required /></label>
+          <label>Color principal<input id="accentInput" type="color" value="#126b57" /></label>
+          <fieldset class="appearance-settings">
+            <legend>Apariencia</legend>
+            <div class="theme-options" role="group" aria-label="Modo de color">
+              <button class="theme-option" type="button" data-theme-choice="light" aria-pressed="false"><span class="theme-swatch light-swatch"></span>Modo claro</button>
+              <button class="theme-option" type="button" data-theme-choice="dark" aria-pressed="false"><span class="theme-swatch dark-swatch"></span>Modo oscuro</button>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Precios base de servicios</legend>
+            <div id="priceSettings" class="price-settings"></div>
+            <div class="new-service"><label>Nuevo servicio<input id="newServiceName" placeholder="Ej. Impermeabilización" /></label><label>Precio base<input id="newServicePrice" type="number" min="0" step="1000" inputmode="decimal" /></label><button id="addServiceButton" class="secondary-button" type="button">Agregar servicio</button></div>
+          </fieldset>
+          <button class="primary-button" type="submit">Guardar cambios</button>
+        </form>
+        <button id="resetButton" class="danger-button">Restablecer datos de demostración</button>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navegación principal">
+      <button class="nav-item active" data-view="dashboardView">Inicio</button>
+      <button class="nav-item admin-only" data-view="registerView">Registrar</button>
+      <button class="nav-item" data-view="searchView">Consulta</button>
+      <button class="nav-item admin-only" data-view="settingsView">Ajustes</button>
+    </nav>
+
+    <dialog id="orderDialog">
+      <article id="dialogContent"></article>
+      <button class="close-dialog" id="closeDialog">Cerrar</button>
+    </dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
